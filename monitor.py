@@ -6,7 +6,6 @@ import time
 from email.mime.text import MIMEText
 
 COURSES_PAGE_URL = "https://www.vgregion.se/f/regionhalsan/Barnmorskemottagninginbjudningar/forlossningsforberedandeprofylaxkurs/kursgoteborg/"
-CHECK_INTERVAL = 3600  # Check every hour
 
 # Telegram settings
 TELEGRAM_TOKEN = os.environ.get("TELEGRAM_TOKEN")
@@ -78,8 +77,6 @@ def monitor_by_time_with_telegram():
             print("No new courses after baseline.")
     except Exception as e:
         print(f"Error during monitoring: {e}")
-
-    time.sleep(CHECK_INTERVAL)
 
 
 if __name__ == "__main__":
