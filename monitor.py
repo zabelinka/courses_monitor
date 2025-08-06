@@ -59,33 +59,32 @@ def monitor_by_time_with_telegram():
     global BASELINE_DATE
     print("Starting monitor by date... Baseline date: ", BASELINE_DATE)
 
-    while True:
-        try:
-            new_courses = get_new_courses()
+    try:
+        new_courses = get_new_courses()
 
-            if new_courses:
-                for course_date, title, url in new_courses:
-                    msg = (
-                        f"⚠️ <b>New Profylaxkurs Available!</b>\n\n"
-                        f"📅 <b>Date:</b> {course_date.strftime('%A, %d %B %Y')}\n"
-                        f"📍 <b>Location:</b> {title}\n\n"
-                        f"🔗 <a href='{url}'>View Course Details</a>\n\n"
-                        f"➡️ <a href='{COURSES_PAGE_URL}'>See All Courses</a>"
-                    )
+        if new_courses:
+            for course_date, title, url in new_courses:
+                msg = (
+                    f"⚠️ <b>New Profylaxkurs Available!</b>\n\n"
+                    f"📅 <b>Date:</b> {course_date.strftime('%A, %d %B %Y')}\n"
+                    f"📍 <b>Location:</b> {title}\n\n"
+                    f"🔗 <a href='{url}'>View Course Details</a>\n\n"
+                    f"➡️ <a href='{COURSES_PAGE_URL}'>See All Courses</a>"
+                )
 
-                    print(msg)
-                    send_telegram_message(msg)
+                print(msg)
+                send_telegram_message(msg)
 
-                # Update baseline to last found date
-                last_date = max(c[0] for c in new_courses)
-                BASELINE_DATE = last_date
+            # Update baseline to last found date
+            last_date = max(c[0] for c in new_courses)
+            BASELINE_DATE = last_date
 
-            else:
-                print("No new courses after baseline.")
-        except Exception as e:
-            print(f"Error during monitoring: {e}")
+        else:
+            print("No new courses after baseline.")
+    except Exception as e:
+        print(f"Error during monitoring: {e}")
 
-        time.sleep(CHECK_INTERVAL)
+    time.sleep(CHECK_INTERVAL)
 
 
 if __name__ == "__main__":
